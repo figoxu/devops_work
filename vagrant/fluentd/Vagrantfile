@@ -1,0 +1,8 @@
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(2) do |config|
+    config.vm.box = "vagrant_flutend"
+    config.vm.hostname = "tdagent"
+    config.vm.box_url = "file:/Users/xujianhui/figospace/dev_ops/boxes/CentOS-7-x86_64-Vagrant-1905_01.VirtualBox.box"
+    config.vm.network "private_network", ip:"10.10.10.11"
+end

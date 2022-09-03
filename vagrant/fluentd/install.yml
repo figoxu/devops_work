@@ -1,0 +1,39 @@
+---
+- hosts: all
+  gather_facts: no
+  remote_user: vagrant
+  become: yes
+  serial: 10
+
+  tasks:
+    - name: u'生成Fluentd Yum Repo'
+      yum_repository:
+        name: fluentd
+        description: Fluentd (TreasureData) Repository
+        baseurl: http://packages.treasuredata.com/3/redhat/7/$basearch
+        enabled: no
+    - name: u'安装基础软件'
+      yum:
+        state: present
+        name:
+          - gcc-c++
+          - cmake
+          - snappy-devel
+    - name: u'安装Fluentd'
+      yum:
+        name: https://xxx.com/app/fluentd/td-agent-3.8.1-0.el7.x86_64.rpm
+        state: present
+    - name: u'Fluentd 额外扩展'
+      shell: /usr/sbin/td-agent-gem install snappy fluent-plugin-throttle fluent-plugin-redis fluent-plugin-redis-store
+    - name: u'创建Fluentd.d 依赖目录'
+      file:
+        dest: "{{ item.dest }}"
+        state: directory
+        owner: td-agent
+        group: td-agent
+        mode: 0755
+      with_items:
+        - { dest: "/etc/td-agent/config.d" }
+        - { dest: "/etc/td-agent/ssl" }
+        - { dest: "/opt/td-agent/pos" }
+        - { dest: "/opt/td-agent/root_dir" }
