@@ -7,8 +7,8 @@
     fi
   ignore_errors: true
 
-- name: copy and config zoo.cfg
-  template: src=zoo.cfg dest={{zookeeper_install_dir}}/zookeeper/conf mode=644
+- name: copy and config zoo.log
+  template: src=zoo.log dest={{zookeeper_install_dir}}/zookeeper/conf mode=644
 
 - name: copy and config log4j
   template: src=log4j.properties dest={{zookeeper_install_dir}}/zookeeper/conf mode=644

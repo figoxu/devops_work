@@ -1,0 +1,25 @@
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
+Vagrant.configure("2") do |config|
+  config.vm.define "default",primary: true do |master|
+    config.vm.network "private_network",  ip:"10.10.10.111"
+    #config.vm.network "forwarded_port", id: "ssh", host: 2222, guest: 22
+    #config.vm.network "forwarded_port", id: "nginx", host: 8080, guest: 80
+  end
+
+
+
+  config.vm.provider "docker" do |d|
+  #d.image = "bashtoni/centos7-vagrant"
+  d.build_dir = "."
+  #d.ports = ["80:3000"]
+  #d.ports = ["22:2222"]
+  d.has_ssh=true
+  d.remains_running = true
+  end
+ #config.ssh.insert_key = true
+ config.ssh.username = "vagrant"
+ #config.ssh.password = "vagrant"
+  #config.vm.provision "file", source: "/Users/xujianhui/mobvista/mtg/figoxu/ssh_key/xujianhui.pub", destination: "~/.ssh/me.pub"
+  config.ssh.private_key_path = "/Users/xujianhui/mobvista/mtg/github/devops_work/vagrant_docker/hello/key/vagrant"
+  config.vm.synced_folder ".", "/vagrant"
+end
